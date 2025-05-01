@@ -1,14 +1,9 @@
 {
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "/server.js"
-        }
-    ],
     "functions": {
-        "server.js": {
+        "api/server.js": {
             "memory": 1024,
             "maxDuration": 10
         }
-    }
+    },
+    "cleanUrls": false
 }

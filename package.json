@@ -1,0 +1,16 @@
+{
+    "name": "vinko-shop",
+    "version": "1.0.0",
+    "description": "Vinko Premium Streetwear E-commerce",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "@sendgrid/mail": "^8.1.5",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "stripe": "^8.174.0"
+    }
+}

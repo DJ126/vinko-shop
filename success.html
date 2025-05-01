@@ -1,0 +1,205 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Thank you for your purchase at Vinko! View your order details and continue shopping for premium streetwear.">
+    <meta name="keywords" content="streetwear, fashion, clothing, order confirmation, Vinko">
+    <meta name="author" content="Vinko">
+    <title>Vinko - Purchase Successful</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #00c4b4;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .order-details h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .order-details p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .order-details ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .order-details ul li {
+            font-size: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        a {
+            display: inline-block;
+            background: #00c4b4;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background: #00a89a;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 30px;
+            }
+            p {
+                font-size: 16px;
+            }
+            .order-details {
+                padding: 20px;
+            }
+            .order-details h2 {
+                font-size: 20px;
+            }
+            a {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Thank You for Your Purchase!</h1>
+    <p>Your order has been successfully placed. You'll receive a confirmation email shortly.</p>
+    <div class="order-details">
+        <h2>Order Details</h2>
+        <p><strong>Order Number:</strong> <span id="order-number">Loading...</span></p>
+        <p><strong>Items Purchased:</strong></p>
+        <ul id="purchased-items"></ul>
+        <p><strong>Total:</strong> <span id="order-total">Loading...</span></p>
+    </div>
+    <a href="/shop.html">Continue Shopping</a>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripe = Stripe('pk_test_your_publishable_key_here');
+
+        async function fetchOrderDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+            if (!sessionId) {
+                document.getElementById('order-number').textContent = 'Not Available';
+                document.getElementById('purchased-items').innerHTML = '<li>No items found.</li>';
+                document.getElementById('order-total').textContent = 'Not Available';
+                return;
+            }
+
+            try {
+                // Retrieve session from local storage or server (mocked here for simplicity)
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const itemsList = document.getElementById('purchased-items');
+                cart.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.product} - $${item.price} x ${item.quantity}`;
+                    itemsList.appendChild(li);
+                });
+
+                // Calculate total
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                document.getElementById('order-total').textContent = `$${total.toFixed(2)}`;
+
+                // Set order number
+                document.getElementById('order-number').textContent = sessionId;
+
+                // Clear cart after displaying
+                localStorage.removeItem('cart');
+            } catch (error) {
+                console.error('Error fetching order details:', error);
+                document.getElementById('order-number').textContent = 'Error';
+                document.getElementById('purchased-items').innerHTML = '<li>Error loading items.</li>';
+                document.getElementById('order-total').textContent = 'Error';
+            }
+        }
+
+        window.onload = fetchOrderDetails;
+    </script>
+</body>
+</html>

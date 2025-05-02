@@ -1,0 +1,152 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Vinko</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #1a1a1a; color: #ffffff; }
+        header { background-color: #252525; }
+        nav a { transition: color 0.3s; }
+        nav a:hover { color: #ff4d4d; }
+        .cart-container { position: relative; display: inline-block; }
+        .cart-icon { font-size: 24px; color: #ff4d4d; cursor: pointer; }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="p-4">
+        <nav class="flex justify-between items-center">
+            <a href="/index.html"><img src="/assets/vinko-logo.png" alt="Vinko Logo" class="h-12"></a>
+            <ul class="flex space-x-6">
+                <li><a href="/index.html" class="text-white">Home</a></li>
+                <li><a href="/shop.html" class="text-white">Shop</a></li>
+                <li><a href="/privacy.html" class="text-white">Privacy</a></li>
+                <li><a href="/terms.html" class="text-white">Terms</a></li>
+            </ul>
+            <div class="flex space-x-4">
+                <div class="cart-container">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <section class="text-center py-20">
+        <h1 class="text-4xl font-bold mb-4">Thank You for Your Purchase!</h1>
+        <p class="text-xl mb-6">Your order has been successfully placed.</p>
+        <div id="orderDetails" class="text-left max-w-md mx-auto"></div>
+        <a href="/shop.html" class="bg-red-500 text-white py-3 px-6 rounded hover:bg-red-600 mt-6 inline-block">Continue Shopping</a>
+    </section>
+
+    <!-- Scripts -->
+    <!-- Tawk.to Chat Widget -->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6812b2cda321df190d7b0ae2/1iq4gkt8l';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <script>
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        async function displayOrderDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+            if (!sessionId) {
+                document.getElementById('orderDetails').innerHTML = '<p>Error: No session ID found.</p>';
+                return;
+            }
+
+            try {
+                const stripe = Stripe('pk_test_51RJjXm4RX6e7Tyh3YzmlFcbw3qrZTEiJ3DW4VlLYzoSj8wh7RwfyYVRcDW57qa1csJc3VxseN3jp3GMcJJrKvD2V00XZ1ca64s');
+                const session = await stripe.checkout.sessions.retrieve(sessionId);
+                const items = session.display_items || [];
+                const total = (session.amount_total / 100).toFixed(2);
+
+                let html = `<p><strong>Order Number:</strong> ${session.id}</p>`;
+                html += '<p><strong>Items Purchased:</strong></p><ul>';
+                items.forEach(item => {
+                    html += `<li>${item.description} - $${(item.amount / 100).toFixed(2)} x ${item.quantity}</li>`;
+                });
+                html += '</ul>';
+                html += `<p><strong>Total:</strong> $${total}</p>`;
+                document.getElementById('orderDetails').innerHTML = html;
+            } catch (error) {
+                console.error('Error retrieving session:', error);
+                document.getElementById('orderDetails').innerHTML = '<p>Error retrieving order details.</p>';
+            }
+        }
+
+        // Initialize cart count and display order details on page load
+        updateCartCount();
+        displayOrderDetails();
+    </script>
+</body>
+</html>

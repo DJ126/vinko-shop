@@ -42,1309 +42,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Shop premium streetwear at Vinko. Discover beanies, tees, pants, and more with free shipping on orders over $50!">
-    <meta name="keywords" content="streetwear, fashion, clothing, beanies, tees, online shopping, Vinko">
-    <meta name="author" content="Vinko">
-    <title>Vinko - Shop Premium Streetwear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
-    <script src="https://js.stripe.com/v3/"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GY0XTKX18X"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GY0XTKX18X');
-    </script>
+    <title>Shop - Vinko</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: #fff;
-            color: #333;
-            overflow-x: hidden;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        body.loaded {
-            opacity: 1;
-        }
-
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #fff;
-            border-top: 5px solid #00c4b4;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        header {
-            background-color: #1a1a1a;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid #444;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo img {
-            height: 60px;
-            transition: transform 0.3s ease;
-        }
-
-        .logo img:hover {
-            transform: rotate(10deg);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 40px;
-            position: relative;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        nav ul li a.active {
-            color: #00c4b4;
-        }
-
-        nav ul li a:hover {
-            color: #00c4b4;
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #1a1a1a;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-            top: 100%;
-            left: 0;
-        }
-
-        .dropdown-content a {
-            color: #fff;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 14px;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #333;
-            color: #00c4b4;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .search-bar {
-            margin-left: 30px;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-bar input {
-            padding: 8px;
-            border: none;
-            border-radius: 20px 0 0 20px;
-            outline: none;
-        }
-
-        .search-bar button {
-            padding: 8px 12px;
-            border: none;
-            background: #00c4b4;
-            color: #fff;
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-bar button:hover {
-            background: #00a89a;
-        }
-
-        .cart-icon, .wishlist-icon {
-            color: #fff;
-            font-size: 20px;
-            margin-left: 30px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .cart-icon span {
+        body { font-family: 'Arial', sans-serif; background-color: #1a1a1a; color: #ffffff; }
+        header { background-color: #252525; }
+        nav a { transition: color 0.3s; }
+        nav a:hover { color: #ff4d4d; }
+        .product-card { transition: transform 0.3s; }
+        .product-card:hover { transform: scale(1.05); }
+        .cart-container { position: relative; display: inline-block; }
+        .cart-icon { font-size: 24px; color: #ff4d4d; cursor: pointer; }
+        .cart-count {
             position: absolute;
             top: -10px;
             right: -10px;
-            background: #00c4b4;
-            color: #fff;
+            background-color: #ffffff;
+            color: #1a1a1a;
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 12px;
-        }
-
-        .user-account {
-            color: #fff;
-            margin-left: 30px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .products {
-            padding: 120px 50px;
-            background: #f8f9fa;
-        }
-
-        .products h2 {
-            text-align: center;
-            font-size: 50px;
-            margin-bottom: 30px;
-            color: #333;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .filter-buttons {
-            text-align: center;
-            margin-bottom: 40px;
-            position: sticky;
-            top: 90px;
-            background: #f8f9fa;
-            padding: 10px 0;
-            z-index: 900;
-        }
-
-        .filter-buttons button {
-            background-color: #1a1a1a;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .filter-buttons button:hover,
-        .filter-buttons button.active {
-            background-color: #00c4b4;
-            box-shadow: 0 0 10px rgba(0, 196, 180, 0.5);
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .product-card {
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .product-card .badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #00c4b4;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .product-card .content {
-            padding: 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .product-card h3 {
-            font-size: 22px;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .product-card p {
-            color: #666;
-            font-size: 18px;
-        }
-
-        .product-card .rating {
-            color: #f4c430;
-            font-size: 16px;
-        }
-
-        .product-card .reviews {
-            font-size: 14px;
-            color: #999;
-        }
-
-        .product-card .actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .product-card .btn-details, .product-card .btn-add-to-cart, .product-card .btn-wishlist {
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .product-card .btn-details {
-            background-color: #00c4b4;
-            color: #fff;
-        }
-
-        .product-card .btn-details:hover {
-            background-color: #00a89a;
-            box-shadow: 0 0 10px rgba(0, 196, 180, 0.5);
-        }
-
-        .product-card .btn-add-to-cart {
-            background-color: #1a1a1a;
-            color: #fff;
-        }
-
-        .product-card .btn-add-to-cart:disabled {
-            background-color: #666;
-            cursor: not-allowed;
-        }
-
-        .product-card .btn-add-to-cart:hover:not(:disabled) {
-            background-color: #00c4b4;
-            box-shadow: 0 0 10px rgba(0, 196, 180, 0.5);
-        }
-
-        .product-card .btn-wishlist {
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        .product-card .btn-wishlist:hover {
-            background-color: #e0e0e0;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            overflow-y: auto;
-        }
-
-        .modal-content {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.3s ease;
-            text-align: center;
-        }
-
-        .modal-content img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .modal-content h3 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .modal-content p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .modal-content .rating {
-            color: #f4c430;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .modal-content ul {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .modal-content ul li {
-            font-size: 16px;
-            margin: 10px 0;
-        }
-
-        .modal-content .reviews-section {
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        .modal-content .reviews-section h4 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .modal-content .review {
-            border-top: 1px solid #eee;
-            padding: 10px 0;
-        }
-
-        .modal-content .review p {
-            font-size: 14px;
-            font-style: italic;
-        }
-
-        .modal-content .review .rating {
-            font-size: 14px;
-        }
-
-        .modal-content .review-form {
-            margin-top: 20px;
-        }
-
-        .modal-content .review-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .modal-content button {
-            background: #00c4b4;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            margin: 5px;
-        }
-
-        .modal-content button:hover {
-            background: #00a89a;
-            box-shadow: 0 0 10px rgba(0, 196, 180, 0.5);
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        footer {
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-        footer .newsletter {
-            margin-bottom: 30px;
-        }
-
-        footer .newsletter h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        footer .newsletter input {
-            padding: 10px;
-            border: none;
-            border-radius: 20px 0 0 20px;
-            width: 250px;
-            outline: none;
-        }
-
-        footer .newsletter button {
-            padding: 10px 20px;
-            border: none;
-            background: #00c4b4;
-            color: #fff;
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        footer .newsletter button:hover {
-            background: #00a89a;
-        }
-
-        footer .social, footer .legal {
-            margin: 20px 0;
-        }
-
-        footer .social a, footer .legal a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: color 0.3s ease;
-        }
-
-        footer .social a:hover, footer .legal a:hover {
-            color: #00c4b4;
-        }
-
-        footer .support a {
-            color: #ccc;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        footer .support a:hover {
-            color: #00c4b4;
-        }
-
-        footer p {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .trust-badges {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .trust-badges img {
-            height: 30px;
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #00c4b4;
-            color: #fff;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            font-size: 24px;
-            opacity: 0;
-            transition: opacity 0.3s ease, background-color 0.3s ease;
-            z-index: 1000;
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-        }
-
-        .back-to-top:hover {
-            background: #00a89a;
-        }
-
-        @media (max-width: 768px) {
-            .products h2 {
-                font-size: 30px;
-            }
-
-            .filter-buttons {
-                top: 70px;
-            }
-
-            .filter-buttons button {
-                padding: 8px 15px;
-                font-size: 14px;
-                margin: 0 5px;
-            }
-
-            nav ul li {
-                margin-left: 20px;
-            }
-
-            .search-bar input {
-                width: 120px;
-            }
+            font-weight: bold;
         }
     </style>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-    <div class="loader">
-        <div class="spinner"></div>
-    </div>
-
-    <header>
-        <div class="logo">
-            <img src="/assets/vinko-logo.png" alt="Vinko Logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="/index.html" aria-label="Home">Home</a></li>
-                <li><a href="/shop.html" class="active" aria-label="Shop">Shop</a></li>
-                <li class="dropdown">
-                    <a href="/#categories" aria-label="Categories">Categories</a>
-                    <div class="dropdown-content">
-                        <a href="/shop.html?filter=beanies">Beanies</a>
-                        <a href="/shop.html?filter=shirts">Shirts</a>
-                        <a href="/shop.html?filter=pants">Pants</a>
-                        <a href="/shop.html?filter=shorts">Shorts</a>
-                        <a href="/shop.html?filter=hats">Hats</a>
-                        <a href="/shop.html?filter=socks">Socks</a>
-                    </div>
-                </li>
-                <li><a href="/#contact" aria-label="Contact">Contact</a></li>
+    <!-- Header -->
+    <header class="p-4">
+        <nav class="flex justify-between items-center">
+            <a href="/index.html"><img src="/assets/vinko-logo.png" alt="Vinko Logo" class="h-12"></a>
+            <ul class="flex space-x-6">
+                <li><a href="/index.html" class="text-white">Home</a></li>
+                <li><a href="/shop.html" class="text-white">Shop</a></li>
+                <li><a href="#" onclick="showWishlist()" class="text-white">Wishlist</a></li>
+                <li><a href="/privacy.html" class="text-white">Privacy</a></li>
+                <li><a href="/terms.html" class="text-white">Terms</a></li>
             </ul>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search products..." aria-label="Search products">
-                <button onclick="searchProducts()" aria-label="Search"><i class="fas fa-search"></i></button>
+            <div class="flex space-x-4">
+                <div class="cart-container">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </div>
             </div>
-            <div class="cart-icon">
-                <i class="fas fa-shopping-cart"></i> <span>0</span>
-            </div>
-            <div class="wishlist-icon" onclick="showWishlist()"><i class="fas fa-heart"></i></div>
-            <div class="user-account" id="userAccount">Sign In</div>
         </nav>
     </header>
 
-    <section class="products">
-        <h2>Our Collection</h2>
-        <div class="filter-buttons">
-            <button data-filter="all" class="active">All</button>
-            <button data-filter="beanies">Beanies</button>
-            <button data-filter="shirts">Shirts</button>
-            <button data-filter="pants">Pants</button>
-            <button data-filter="shorts">Shorts</button>
-            <button data-filter="hats">Hats</button>
-            <button data-filter="socks">Socks</button>
+    <!-- Shop Section -->
+    <section class="py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">Our Collection</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mx-4">
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/street-beanie.png" alt="Street Beanie" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Street Beanie</h3>
+                <p>$25.00</p>
+                <button onclick="addToCart('beanie', 25)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('beanie', 25)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/graphic-tee.png" alt="Graphic Tee" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Graphic Tee</h3>
+                <p>$35.00</p>
+                <button onclick="addToCart('tee', 35)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('tee', 35)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/cargo-pants.png" alt="Cargo Pants" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Cargo Pants</h3>
+                <p>$60.00</p>
+                <button onclick="addToCart('pants', 60)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('pants', 60)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/denim-shorts.png" alt="Denim Shorts" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Denim Shorts</h3>
+                <p>$45.00</p>
+                <button onclick="addToCart('shorts', 45)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('shorts', 45)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/bucket-hat.png" alt="Bucket Hat" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Bucket Hat</h3>
+                <p>$30.00</p>
+                <button onclick="addToCart('hat', 30)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('hat', 30)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/patterned-socks.png" alt="Patterned Socks" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Patterned Socks</h3>
+                <p>$15.00</p>
+                <button onclick="addToCart('socks', 15)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('socks', 15)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
         </div>
-        <div class="product-grid">
-            <div class="product-card" data-category="beanies" data-name="street beanie">
-                <div class="badge">New Arrival</div>
-                <img src="/assets/street-beanie.png" alt="Street Beanie in black color" loading="lazy">
-                <div class="content">
-                    <h3>Street Beanie</h3>
-                    <p>$19.99</p>
-                    <div class="rating">★★★★☆</div>
-                    <div class="reviews">12 reviews</div>
-                    <div class="actions">
-                        <button class="btn-details" data-modal="modal-beanie" aria-label="View Street Beanie Details">View Details</button>
-                        <button class="btn-add-to-cart" data-product="beanie" data-price="19.99" aria-label="Add Street Beanie to Cart">Add to Cart</button>
-                        <button class="btn-wishlist" data-product="Street Beanie" aria-label="Add Street Beanie to Wishlist"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card" data-category="shirts" data-name="graphic tee">
-                <img src="/assets/graphic-tee.png" alt="Graphic Tee with urban design" loading="lazy">
-                <div class="content">
-                    <h3>Graphic Tee</h3>
-                    <p>$29.99</p>
-                    <div class="rating">★★★★★</div>
-                    <div class="reviews">25 reviews</div>
-                    <div class="actions">
-                        <button class="btn-details" data-modal="modal-tee" aria-label="View Graphic Tee Details">View Details</button>
-                        <button class="btn-add-to-cart" data-product="tee" data-price="29.99" aria-label="Add Graphic Tee to Cart">Add to Cart</button>
-                        <button class="btn-wishlist" data-product="Graphic Tee" aria-label="Add Graphic Tee to Wishlist"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card" data-category="pants" data-name="cargo pants">
-                <img src="/assets/cargo-pants.png" alt="Cargo Pants in khaki color" loading="lazy">
-                <div class="content">
-                    <h3>Cargo Pants</h3>
-                    <p>$49.99</p>
-                    <div class="rating">★★★★☆</div>
-                    <div class="reviews">18 reviews</div>
-                    <div class="actions">
-                        <button class="btn-details" data-modal="modal-pants" aria-label="View Cargo Pants Details">View Details</button>
-                        <button class="btn-add-to-cart" data-product="pants" data-price="49.99" aria-label="Add Cargo Pants to Cart">Add to Cart</button>
-                        <button class="btn-wishlist" data-product="Cargo Pants" aria-label="Add Cargo Pants to Wishlist"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card" data-category="shorts" data-name="denim shorts">
-                <img src="/assets/denim-shorts.png" alt="Denim Shorts in blue wash" loading="lazy">
-                <div class="content">
-                    <h3>Denim Shorts</h3>
-                    <p>$34.99</p>
-                    <div class="rating">★★★★☆</div>
-                    <div class="reviews">15 reviews</div>
-                    <div class="actions">
-                        <button class="btn-details" data-modal="modal-shorts" aria-label="View Denim Shorts Details">View Details</button>
-                        <button class="btn-add-to-cart" data-product="shorts" data-price="34.99" aria-label="Add Denim Shorts to Cart">Add to Cart</button>
-                        <button class="btn-wishlist" data-product="Denim Shorts" aria-label="Add Denim Shorts to Wishlist"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card" data-category="hats" data-name="bucket hat">
-                <div class="badge">Best Seller</div>
-                <img src="/assets/bucket-hat.png" alt="Bucket Hat in white color" loading="lazy">
-                <div class="content">
-                    <h3>Bucket Hat</h3>
-                    <p>$24.99</p>
-                    <div class="rating">★★★★☆</div>
-                    <div class="reviews">20 reviews</div>
-                    <div class="actions">
-                        <button class="btn-details" data-modal="modal-hat" aria-label="View Bucket Hat Details">View Details</button>
-                        <button class="btn-add-to-cart" data-product="hat" data-price="24.99" aria-label="Add Bucket Hat to Cart">Add to Cart</button>
-                        <button class="btn-wishlist" data-product="Bucket Hat" aria-label="Add Bucket Hat to Wishlist"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card" data-category="socks" data-name="patterned socks">
-                <img src="/assets/patterned-socks.png" alt="Patterned Socks with colorful design" loading="lazy">
-                <div class="content">
-                    <h3>Patterned Socks</h3>
-                    <p>$9.99</p>
-                    <div class="rating">★★★★☆</div>
-                    <div class="reviews">10 reviews</div>
-                    <div class="actions">
-                        <button class="btn-details" data-modal="modal-socks" aria-label="View Patterned Socks Details">View Details</button>
-                        <button class="btn-add-to-cart" data-product="socks" data-price="9.99" aria-label="Add Patterned Socks to Cart">Add to Cart</button>
-                        <button class="btn-wishlist" data-product="Patterned Socks" aria-label="Add Patterned Socks to Wishlist"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
+        <div class="text-center mt-8">
+            <button id="checkout-btn" class="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-600">Checkout</button>
         </div>
     </section>
 
-    <div class="modal" id="modal-beanie">
-        <div class="modal-content">
-            <img src="/assets/street-beanie.png" alt="Street Beanie in black color">
-            <h3>Street Beanie</h3>
-            <p>A cozy beanie perfect for chilly days. Made with premium wool for warmth and style.</p>
-            <div class="rating">★★★★☆</div>
-            <div class="reviews-section">
-                <h4>Customer Reviews</h4>
-                <div class="review">
-                    <p>"Keeps me warm and looks great!"</p>
-                    <div class="rating">★★★★★</div>
-                    <p>- Alex P.</p>
-                </div>
-                <div class="review">
-                    <p>"Love the fit, but I wish there were more colors."</p>
-                    <div class="rating">★★★★☆</div>
-                    <p>- Jamie L.</p>
-                </div>
-                <div class="review-form">
-                    <h4>Leave a Review</h4>
-                    <textarea placeholder="Write your review..." aria-label="Write your review"></textarea>
-                    <button onclick="submitReview('Street Beanie')">Submit Review</button>
-                </div>
-            </div>
-            <button class="close-modal" aria-label="Close Modal">Close</button>
-        </div>
-    </div>
-    <div class="modal" id="modal-tee">
-        <div class="modal-content">
-            <img src="/assets/graphic-tee.png" alt="Graphic Tee with urban design">
-            <h3>Graphic Tee</h3>
-            <p>Stand out with this bold graphic tee. 100% cotton for all-day comfort.</p>
-            <div class="rating">★★★★★</div>
-            <div class="reviews-section">
-                <h4>Customer Reviews</h4>
-                <div class="review">
-                    <p>"Best tee I’ve ever owned!"</p>
-                    <div class="rating">★★★★★</div>
-                    <p>- Sarah M.</p>
-                </div>
-                <div class="review">
-                    <p>"Super soft and stylish."</p>
-                    <div class="rating">★★★★★</div>
-                    <p>- Mark T.</p>
-                </div>
-                <div class="review-form">
-                    <h4>Leave a Review</h4>
-                    <textarea placeholder="Write your review..." aria-label="Write your review"></textarea>
-                    <button onclick="submitReview('Graphic Tee')">Submit Review</button>
-                </div>
-            </div>
-            <button class="close-modal" aria-label="Close Modal">Close</button>
-        </div>
-    </div>
-    <div class="modal" id="modal-pants">
-        <div class="modal-content">
-            <img src="/assets/cargo-pants.png" alt="Cargo Pants in khaki color">
-            <h3>Cargo Pants</h3>
-            <p>Functional and stylish cargo pants with multiple pockets for convenience.</p>
-            <div class="rating">★★★★☆</div>
-            <div class="reviews-section">
-                <h4>Customer Reviews</h4>
-                <div class="review">
-                    <p>"Great for outdoor activities!"</p>
-                    <div class="rating">★★★★★</div>
-                    <p>- Chris R.</p>
-                </div>
-                <div class="review">
-                    <p>"A bit tight around the thighs."</p>
-                    <div class="rating">★★★☆☆</div>
-                    <p>- Taylor S.</p>
-                </div>
-                <div class="review-form">
-                    <h4>Leave a Review</h4>
-                    <textarea placeholder="Write your review..." aria-label="Write your review"></textarea>
-                    <button onclick="submitReview('Cargo Pants')">Submit Review</button>
-                </div>
-            </div>
-            <button class="close-modal" aria-label="Close Modal">Close</button>
-        </div>
-    </div>
-    <div class="modal" id="modal-shorts">
-        <div class="modal-content">
-            <img src="/assets/denim-shorts.png" alt="Denim Shorts in blue wash">
-            <h3>Denim Shorts</h3>
-            <p>Classic denim shorts for a casual, laid-back look. Perfect for summer.</p>
-            <div class="rating">★★★★☆</div>
-            <div class="reviews-section">
-                <h4>Customer Reviews</h4>
-                <div class="review">
-                    <p>"Perfect fit and great quality!"</p>
-                    <div class="rating">★★★★★</div>
-                    <p>- Emily W.</p>
-                </div>
-                <div class="review">
-                    <p>"Love the style, very comfortable."</p>
-                    <div class="rating">★★★★☆</div>
-                    <p>- Liam D.</p>
-                </div>
-                <div class="review-form">
-                    <h4>Leave a Review</h4>
-                    <textarea placeholder="Write your review..." aria-label="Write your review"></textarea>
-                    <button onclick="submitReview('Denim Shorts')">Submit Review</button>
-                </div>
-            </div>
-            <button class="close-modal" aria-label="Close Modal">Close</button>
-        </div>
-    </div>
-    <div class="modal" id="modal-hat">
-        <div class="modal-content">
-            <img src="/assets/bucket-hat.png" alt="Bucket Hat in white color">
-            <h3>Bucket Hat</h3>
-            <p>Trendy bucket hat to complete your streetwear look. Adjustable fit.</p>
-            <div class="rating">★★★★☆</div>
-            <div class="reviews-section">
-                <h4>Customer Reviews</h4>
-                <div class="review">
-                    <p>"My favorite hat now!"</p>
-                    <div class="rating">★★★★★</div>
-                    <p>- Mia K.</p>
-                </div>
-                <div class="review">
-                    <p>"Looks great but a bit small."</p>
-                    <div class="rating">★★★☆☆</div>
-                    <p>- Ethan B.</p>
-                </div>
-                <div class="review-form">
-                    <h4>Leave a Review</h4>
-                    <textarea placeholder="Write your review..." aria-label="Write your review"></textarea>
-                    <button onclick="submitReview('Bucket Hat')">Submit Review</button>
-                </div>
-            </div>
-            <button class="close-modal" aria-label="Close Modal">Close</button>
-        </div>
-    </div>
-    <div class="modal" id="modal-socks">
-        <div class="modal-content">
-            <img src="/assets/patterned-socks.png" alt="Patterned Socks with colorful design">
-            <h3>Patterned Socks</h3>
-            <p>Add some fun to your outfit with these vibrant patterned socks.</p>
-            <div class="rating">★★★★☆</div>
-            <div class="reviews-section">
-                <h4>Customer Reviews</h4>
-                <div class="review">
-                    <p>"So cute and comfortable!"</p>
-                    <div class="rating">★★★★★</div>
-                    <p>- Olivia H.</p>
-                </div>
-                <div class="review">
-                    <p>"Colors are vibrant, love them."</p>
-                    <div class="rating">★★★★☆</div>
-                    <p>- Noah J.</p>
-                </div>
-                <div class="review-form">
-                    <h4>Leave a Review</h4>
-                    <textarea placeholder="Write your review..." aria-label="Write your review"></textarea>
-                    <button onclick="submitReview('Patterned Socks')">Submit Review</button>
-                </div>
-            </div>
-            <button class="close-modal" aria-label="Close Modal">Close</button>
-        </div>
-    </div>
-
-    <footer>
-        <div class="newsletter">
-            <h3>Stay in the Loop</h3>
-            <input type="email" id="newsletterEmail" placeholder="Enter your email" aria-label="Enter your email for newsletter">
-            <button onclick="subscribeNewsletter()">Subscribe</button>
-        </div>
-        <div class="social">
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-        </div>
-        <div class="legal">
-            <a href="/privacy.html" aria-label="Privacy Policy">Privacy Policy</a>
-            <a href="/terms.html" aria-label="Terms of Service">Terms of Service</a>
-        </div>
-        <div class="support">
-            <a href="/#contact">Customer Support</a>
-            <a href="/#contact">Shipping & Returns</a>
-            <a href="/#contact">FAQs</a>
-        </div>
-        <div class="trust-badges">
-            <img src="https://stripe.com/img/v3/home/badges/stripe_badge_transparent.png" alt="Secure Checkout with Stripe">
-            <img src="https://via.placeholder.com/100x30.png?text=Secure+Payments" alt="Secure Payments">
-        </div>
+    <!-- Footer -->
+    <footer class="p-6 text-center bg-gray-800">
         <p>© 2025 Vinko. All rights reserved.</p>
+        <p><a href="mailto:support@shopvinko.com" class="text-red-500">support@shopvinko.com</a></p>
     </footer>
 
-    <a href="#" class="back-to-top" aria-label="Back to Top"><i class="fas fa-chevron-up"></i></a>
-
-    <!-- Tawk.to Live Chat -->
-    <script>
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-            s1.async=true;
-            s1.src='https://embed.tawk.to/6812b2cda321df190d7b0ae2/default';
-            s1.charset='UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
+    <!-- Scripts -->
+    <!-- Tawk.to Chat Widget -->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6812b2cda321df190d7b0ae2/1iq4gkt8l';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
         })();
     </script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD_UEunKVvWiM6-0eOnqn1ijowEyXyf8Rk",
-    authDomain: "vinko-4e631.firebaseapp.com",
-    projectId: "vinko-4e631",
-    storageBucket: "vinko-4e631.firebasestorage.app",
-    messagingSenderId: "1076739457861",
-    appId: "1:1076739457861:web:0536bf0a3baff33ffc742c",
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        // User authentication state
-        const userAccount = document.getElementById('userAccount');
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                userAccount.textContent = `Hi, ${user.email} (Sign Out)`;
-                userAccount.onclick = () => firebase.auth().signOut();
-            } else {
-                userAccount.textContent = 'Sign In';
-                userAccount.onclick = () => {
-                    const email = prompt('Enter your email:');
-                    const password = prompt('Enter your password:');
-                    firebase.auth().signInWithEmailAndPassword(email, password).catch(err => {
-                        if (err.code === 'auth/user-not-found') {
-                            firebase.auth().createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
-                        } else {
-                            alert(err.message);
-                        }
-                    });
-                };
-            }
-        });
-
-        // Initialize Stripe
-        const stripe = Stripe('pk_test_51RJjXm4RX6e7Tyh3YzmlFcbw3qrZTEiJ3DW4VlLYzoSj8wh7RwfyYVRcDW57qa1csJc3VxseN3jp3GMcJJrKvD2V00XZ1ca64s');
-
-        // Determine backend URL
-        const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-        const backendUrl = isLocalhost ? 'http://localhost:3000/create-checkout-session' : '/api/create-checkout-session';
-
-        // Cart state
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // Wishlist state
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-
-        // Update cart icon
-        function updateCartIcon() {
-            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.querySelector('.cart-icon span').textContent = cartCount;
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
         }
 
-        // Add to cart
         async function addToCart(product, price) {
             try {
-                const response = await fetch(isLocalhost ? 'http://localhost:3000/check-stock' : '/api/check-stock', {
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const baseUrl = isLocalhost ? 'http://localhost:3000' : '/api';
+                const checkStockUrl = `${baseUrl}/check-stock`;
+
+                const response = await fetch(checkStockUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ product, quantity: 1 }),
                 });
-                const result = await response.json();
-                if (result.error) {
-                    alert(result.error);
-                    return;
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const existingItem = cart.find(item => item.product === product);
-                if (existingItem) {
-                    existingItem.quantity += 1;
+                const data = await response.json();
+                if (data.success) {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const existingItem = cart.find(item => item.product === product);
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        cart.push({ product, price, quantity: 1 });
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    alert(`${product} added to cart!`);
                 } else {
-                    cart.push({ product, price, quantity: 1 });
+                    alert(data.error || 'Failed to add to cart.');
                 }
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartIcon();
-                gtag('event', 'add_to_cart', { items: [{ id: product, name: product, price: price, quantity: 1 }] });
             } catch (error) {
-                console.error('Error checking stock:', error);
+                console.error('Error checking stock:', error.message);
                 alert('Failed to add to cart. Please try again.');
             }
         }
 
-        // Add to wishlist
-        function addToWishlist(product) {
-            if (!wishlist.includes(product)) {
-                wishlist.push(product);
-                localStorage.setItem('wishlist', JSON.stringify(wishlist));
-                alert(`${product} added to wishlist!`);
+        function showWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            if (wishlist.length === 0) {
+                alert("Your wishlist is empty!");
             } else {
-                alert(`${product} is already in your wishlist.`);
+                alert("Your Wishlist:\n" + wishlist.join("\n"));
             }
         }
 
-        // Show wishlist
-        function showWishlist() {
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h3>Your Wishlist</h3>
-                    ${wishlist.length === 0 ? '<p>Your wishlist is empty.</p>' : `
-                        <ul>
-                            ${wishlist.map(item => `<li>${item}</li>`).join('')}
-                        </ul>
-                    `}
-                    <button onclick="this.parentElement.parentElement.style.display='none'">Close</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.style.display = 'flex';
-        }
+        document.getElementById('checkout-btn').addEventListener('click', async () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
 
-        // Show cart modal
-        function showCart() {
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h3>Your Cart</h3>
-                    ${cart.length === 0 ? '<p>Your cart is empty.</p>' : `
-                        <ul>
-                            ${cart.map(item => `
-                                <li>${item.product} - $${item.price} x ${item.quantity}</li>
-                            `).join('')}
-                        </ul>
-                        <button onclick="checkoutCart()">Checkout</button>
-                    `}
-                    <button onclick="this.parentElement.parentElement.style.display='none'">Close</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.style.display = 'flex';
-        }
-
-        // Checkout cart
-        async function checkoutCart() {
             try {
-                const response = await fetch(backendUrl, {
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const baseUrl = isLocalhost ? 'http://localhost:3000' : '/api';
+                const checkoutUrl = `${baseUrl}/create-checkout-session`;
+
+                const response = await fetch(checkoutUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ items: cart }),
                 });
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
                 const session = await response.json();
-                if (session.error) throw new Error(session.error);
-                const result = await stripe.redirectToCheckout({ sessionId: session.id });
-                if (result.error) throw new Error(result.error.message);
-                gtag('event', 'begin_checkout', { items: cart.map(item => ({ id: item.product, name: item.product, price: item.price, quantity: item.quantity })) });
+                const stripe = Stripe('pk_test_51RJjXm4RX6e7Tyh3YzmlFcbw3qrZTEiJ3DW4VlLYzoSj8wh7RwfyYVRcDW57qa1csJc3VxseN3jp3GMcJJrKvD2V00XZ1ca64s');
+                await stripe.redirectToCheckout({ sessionId: session.id });
             } catch (error) {
-                console.error('Checkout Error:', error);
-                alert(`Failed to initiate checkout: ${error.message}.`);
-            }
-        }
-
-        // Search functionality
-        function searchProducts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name').toLowerCase();
-                card.style.display = name.includes(query) ? 'block' : 'none';
-            });
-        }
-
-        // Submit review (placeholder)
-        function submitReview(product) {
-            const reviewText = document.querySelector(`#modal-${product.toLowerCase().replace(' ', '-')}`).querySelector('textarea').value;
-            if (reviewText) {
-                alert(`Thank you for your review of ${product}!`);
-            } else {
-                alert('Please write a review before submitting.');
-            }
-        }
-
-        // Loader
-        window.addEventListener('load', () => {
-            document.querySelector('.loader').classList.add('hidden');
-            document.body.classList.add('loaded');
-        });
-
-        // Fade-in animation for product cards
-        const animateCards = (cards, delayMultiplier) => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.style.opacity = 1;
-                            entry.target.style.transform = 'translateY(0)';
-                        }, index * delayMultiplier);
-                    }
-                });
-            }, { threshold: 0.2 });
-
-            cards.forEach(card => {
-                card.style.opacity = 0;
-                card.style.transform = 'translateY(40px)';
-                card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-                observer.observe(card);
-            });
-        };
-
-        animateCards(document.querySelectorAll('.product-card'), 150);
-
-        // Product filter
-        const filterButtons = document.querySelectorAll('.filter-buttons button');
-        const productCards = document.querySelectorAll('.product-card');
-        const urlParams = new URLSearchParams(window.location.search);
-        const initialFilter = urlParams.get('filter') || 'all';
-        const initialSearch = urlParams.get('search') || '';
-
-        filterButtons.forEach(button => {
-            const filter = button.getAttribute('data-filter');
-            if (filter === initialFilter) {
-                button.classList.add('active');
-            }
-            button.addEventListener('click', () => {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                productCards.forEach(card => {
-                    card.style.display = 'none';
-                    card.style.opacity = 0;
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                        card.style.display = 'block';
-                        setTimeout(() => {
-                            card.style.opacity = 1;
-                            card.style.transition = 'opacity 0.5s ease';
-                        }, 100);
-                    }
-                });
-            });
-        });
-
-        // Apply search filter on load
-        if (initialSearch) {
-            document.getElementById('searchInput').value = initialSearch;
-            searchProducts();
-        }
-
-        // Modal functionality
-        const modals = document.querySelectorAll('.modal');
-        const detailButtons = document.querySelectorAll('.btn-details');
-        const closeButtons = document.querySelectorAll('.close-modal');
-
-        detailButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const modalId = button.getAttribute('data-modal');
-                document.getElementById(modalId).style.display = 'flex';
-            });
-        });
-
-        closeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                modals.forEach(modal => modal.style.display = 'none');
-            });
-        });
-
-        modals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        });
-
-        // Add to cart buttons
-        document.querySelectorAll('.btn-add-to-cart').forEach(button => {
-            button.addEventListener('click', () => {
-                const product = button.getAttribute('data-product');
-                const price = parseFloat(button.getAttribute('data-price'));
-                addToCart(product, price);
-            });
-        });
-
-        // Add to wishlist buttons
-        document.querySelectorAll('.btn-wishlist').forEach(button => {
-            button.addEventListener('click', () => {
-                const product = button.getAttribute('data-product');
-                addToWishlist(product);
-            });
-        });
-
-        // Cart icon click
-        document.querySelector('.cart-icon').addEventListener('click', showCart);
-
-        // Initial cart icon update
-        updateCartIcon();
-
-        // Back to top button visibility
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
+                console.error('Checkout Error:', error.message);
+                alert('Checkout failed. Please try again.');
             }
         });
 
-        // Newsletter signup (placeholder)
-        function subscribeNewsletter() {
-            const email = document.getElementById('newsletterEmail').value;
-            if (email) {
-                alert('Thank you for subscribing!');
-                document.getElementById('newsletterEmail').value = '';
-            } else {
-                alert('Please enter a valid email address.');
-            }
-        }
-
-       <!-- Cookie Consent -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" integrity="sha512-h20K5uXSb2iI+0x0MhW0tKy0w1r5zJPC5cYp+S0q+jz2QDA4XzWnyZ4L7T80oI2ATj/ufpUmsUOyFlwT6Jtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    window.addEventListener("load", function(){
-        if (window.cookieconsent) {
-            window.cookieconsent.initialize({
-                "palette": {
-                    "popup": { "background": "#1a1a1a" },
-                    "button": { "background": "#00c4b4" }
-                },
-                "content": {
-                    "message": "We use cookies to enhance your experience.",
-                    "dismiss": "Got it!",
-                    "link": "Learn more",
-                    "href": "/privacy.html"
-                }
-            });
-        } else {
-            console.warn("CookieConsent library failed to load. Please check the CDN or your network.");
-        }
-    });
-</script>
+        // Initialize cart count on page load
+        updateCartCount();
+    </script>
 </body>
 </html>

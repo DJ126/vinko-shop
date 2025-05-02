@@ -42,612 +42,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover Vinko, your go-to for premium streetwear. Shop beanies, tees, pants, and more with free shipping on orders over $50!">
-    <meta name="keywords" content="streetwear, fashion, clothing, beanies, tees, online shopping, Vinko">
+    <meta name="description" content="Vinko - Premium Streetwear E-commerce">
+    <meta name="keywords" content="streetwear, fashion, clothing, Vinko">
     <meta name="author" content="Vinko">
-    <title>Vinko - Premium Streetwear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GY0XTKX18X"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GY0XTKX18X');
-    </script>
+    <meta name="robots" content="index, follow">
+    <title>Vinko | Premium Streetwear</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: #fff;
-            color: #333;
-        }
-
-        header {
-            background-color: #1a1a1a;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid #444;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo img {
-            height: 60px;
-            transition: transform 0.3s ease;
-        }
-
-        .logo img:hover {
-            transform: rotate(10deg);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 40px;
-            position: relative;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        nav ul li a.active {
-            color: #00c4b4;
-        }
-
-        nav ul li a:hover {
-            color: #00c4b4;
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
+        body { font-family: 'Arial', sans-serif; background-color: #1a1a1a; color: #ffffff; }
+        header { background-color: #252525; }
+        nav a { transition: color 0.3s; }
+        nav a:hover { color: #ff4d4d; }
+        .category-card { transition: transform 0.3s; }
+        .category-card:hover { transform: scale(1.05); }
+        footer { background-color: #252525; }
+        .cart-container { position: relative; display: inline-block; }
+        .cart-icon { font-size: 24px; color: #ff4d4d; cursor: pointer; }
+        .cart-count {
             position: absolute;
-            background-color: #1a1a1a;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-            top: 100%;
-            left: 0;
-        }
-
-        .dropdown-content a {
-            color: #fff;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 14px;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #333;
-            color: #00c4b4;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .search-bar {
-            margin-left: 30px;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-bar input {
-            padding: 8px;
-            border: none;
-            border-radius: 20px 0 0 20px;
-            outline: none;
-        }
-
-        .search-bar button {
-            padding: 8px 12px;
-            border: none;
-            background: #00c4b4;
-            color: #fff;
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-bar button:hover {
-            background: #00a89a;
-        }
-
-        .user-account, .wishlist-icon {
-            color: #fff;
-            margin-left: 30px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .wishlist-icon i {
-            font-size: 20px;
-        }
-
-        .hero {
-            height: 100vh;
-            background: url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e') no-repeat center/cover;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .hero h1, .hero p, .hero a {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 60px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-
-        .hero a {
-            background: #00c4b4;
-            color: #fff;
-            padding: 15px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
-        }
-
-        .hero a:hover {
-            background: #00a89a;
-        }
-
-        #featured, #testimonials, #categories, #contact {
-            padding: 80px 50px;
-            text-align: center;
-        }
-
-        #featured h2, #testimonials h2, #categories h2, #contact h2 {
-            font-size: 40px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .featured-grid, .category-grid, .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .featured-card, .category-card, .testimonial-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            overflow: hidden;
-        }
-
-        .featured-card:hover, .category-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .featured-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .featured-card .content {
-            padding: 20px;
-        }
-
-        .featured-card h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .featured-card p {
-            font-size: 16px;
-            color: #666;
-        }
-
-        .category-card {
-            padding: 20px;
-        }
-
-        .category-card a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            font-size: 18px;
-        }
-
-        .testimonial-card {
-            padding: 30px;
-            background: #f8f9fa;
-        }
-
-        .testimonial-card p {
-            font-size: 16px;
-            font-style: italic;
-            margin-bottom: 15px;
-        }
-
-        .testimonial-card h4 {
-            font-size: 18px;
-            color: #00c4b4;
-        }
-
-        footer {
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-        footer .newsletter {
-            margin-bottom: 30px;
-        }
-
-        footer .newsletter h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        footer .newsletter input {
-            padding: 10px;
-            border: none;
-            border-radius: 20px 0 0 20px;
-            width: 250px;
-            outline: none;
-        }
-
-        footer .newsletter button {
-            padding: 10px 20px;
-            border: none;
-            background: #00c4b4;
-            color: #fff;
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        footer .newsletter button:hover {
-            background: #00a89a;
-        }
-
-        footer .social, footer .legal {
-            margin: 20px 0;
-        }
-
-        footer .social a, footer .legal a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: color 0.3s ease;
-        }
-
-        footer .social a:hover, footer .legal a:hover {
-            color: #00c4b4;
-        }
-
-        footer .support a {
-            color: #ccc;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        footer .support a:hover {
-            color: #00c4b4;
-        }
-
-        footer p {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 40px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .hero a {
-                padding: 10px 20px;
-                font-size: 16px;
-            }
-
-            #featured h2, #testimonials h2, #categories h2, #contact h2 {
-                font-size: 30px;
-            }
-
-            nav ul li {
-                margin-left: 20px;
-            }
-
-            .search-bar input {
-                width: 120px;
-            }
+            top: -10px;
+            right: -10px;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
         }
     </style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1234567890"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-1234567890');
+    </script>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="/assets/vinko-logo.png" alt="Vinko Logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="/index.html" class="active" aria-label="Home">Home</a></li>
-                <li><a href="/shop.html" aria-label="Shop">Shop</a></li>
-                <li class="dropdown">
-                    <a href="/#categories" aria-label="Categories">Categories</a>
-                    <div class="dropdown-content">
-                        <a href="/shop.html?filter=beanies">Beanies</a>
-                        <a href="/shop.html?filter=shirts">Shirts</a>
-                        <a href="/shop.html?filter=pants">Pants</a>
-                        <a href="/shop.html?filter=shorts">Shorts</a>
-                        <a href="/shop.html?filter=hats">Hats</a>
-                        <a href="/shop.html?filter=socks">Socks</a>
-                    </div>
-                </li>
-                <li><a href="/#contact" aria-label="Contact">Contact</a></li>
+    <!-- Header -->
+    <header class="p-4">
+        <nav class="flex justify-between items-center">
+            <a href="/index.html"><img src="/assets/vinko-logo.png" alt="Vinko Logo" class="h-12"></a>
+            <ul class="flex space-x-6">
+                <li><a href="/index.html" class="text-white">Home</a></li>
+                <li><a href="/shop.html" class="text-white">Shop</a></li>
+                <li><a href="#" onclick="showWishlist()" class="text-white">Wishlist</a></li>
+                <li><a href="/privacy.html" class="text-white">Privacy</a></li>
+                <li><a href="/terms.html" class="text-white">Terms</a></li>
             </ul>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search products..." aria-label="Search products">
-                <button onclick="searchProducts()" aria-label="Search"><i class="fas fa-search"></i></button>
+            <div class="flex space-x-4">
+                <input type="text" id="searchInput" placeholder="Search..." class="p-2 rounded text-black">
+                <button onclick="searchProducts()" class="bg-red-500 p-2 rounded text-white">Search</button>
+                <div class="cart-container">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </div>
             </div>
-            <div class="wishlist-icon" onclick="showWishlist()"><i class="fas fa-heart"></i></div>
-            <div class="user-account" id="userAccount">Sign In</div>
         </nav>
     </header>
 
-    <section class="hero">
-        <h1>Discover Vinko Streetwear</h1>
-        <p>Elevate your style with our premium collection</p>
-        <a href="/shop.html">Shop Now</a>
+    <!-- Hero Section -->
+    <section class="text-center py-20">
+        <h1 class="text-5xl font-bold mb-4">Welcome to Vinko</h1>
+        <p class="text-xl mb-6">Premium Streetwear for the Modern Rebel</p>
+        <a href="/shop.html" class="bg-red-500 text-white py-3 px-6 rounded hover:bg-red-600">Shop Now</a>
     </section>
 
-    <section id="featured">
-        <h2>Featured Products</h2>
-        <div class="featured-grid">
-            <div class="featured-card">
-                <img src="/assets/graphic-tee.png" alt="Graphic Tee with urban design" loading="lazy">
-                <div class="content">
-                    <h3>Graphic Tee</h3>
-                    <p>$29.99</p>
-                    <a href="/shop.html?filter=shirts" class="btn">Shop Now</a>
-                </div>
+    <!-- Categories Section -->
+    <section id="categories" class="py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">Explore Categories</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mx-4">
+            <div class="category-card bg-gray-800 p-4 rounded">
+                <img src="/assets/graphic-tee.png" alt="Graphic Tee" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Graphic Tees</h3>
+                <a href="/shop.html#tees" class="text-red-500 mt-2 inline-block">Shop Now</a>
             </div>
-            <div class="featured-card">
-                <img src="/assets/cargo-pants.png" alt="Cargo Pants in khaki color" loading="lazy">
-                <div class="content">
-                    <h3>Cargo Pants</h3>
-                    <p>$49.99</p>
-                    <a href="/shop.html?filter=pants" class="btn">Shop Now</a>
-                </div>
+            <div class="category-card bg-gray-800 p-4 rounded">
+                <img src="/assets/cargo-pants.png" alt="Cargo Pants" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Cargo Pants</h3>
+                <a href="/shop.html#pants" class="text-red-500 mt-2 inline-block">Shop Now</a>
             </div>
-            <div class="featured-card">
-                <img src="/assets/bucket-hat.png" alt="Bucket Hat in white color" loading="lazy">
-                <div class="content">
-                    <h3>Bucket Hat</h3>
-                    <p>$24.99</p>
-                    <a href="/shop.html?filter=hats" class="btn">Shop Now</a>
-                </div>
+            <div class="category-card bg-gray-800 p-4 rounded">
+                <img src="/assets/bucket-hat.png" alt="Bucket Hat" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Bucket Hats</h3>
+                <a href="/shop.html#hats" class="text-red-500 mt-2 inline-block">Shop Now</a>
             </div>
         </div>
     </section>
 
-    <section id="testimonials">
-        <h2>What Our Customers Say</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <p>"The quality of Vinko’s clothing is unmatched! My graphic tee is now my go-to piece."</p>
-                <h4>- Sarah M.</h4>
-            </div>
-            <div class="testimonial-card">
-                <p>"Fast shipping and amazing customer service. I’ll definitely be back for more!"</p>
-                <h4>- James T.</h4>
-            </div>
-            <div class="testimonial-card">
-                <p>"I love the bucket hat! It’s stylish and fits perfectly."</p>
-                <h4>- Emily R.</h4>
-            </div>
-        </div>
+    <!-- Newsletter Section -->
+    <section class="py-12 bg-gray-700 text-center">
+        <h2 class="text-3xl font-bold mb-4">Join Our Newsletter</h2>
+        <p class="mb-6">Stay updated with the latest drops and exclusive offers!</p>
+        <input type="email" id="newsletterEmail" placeholder="Enter your email" class="p-2 rounded text-black">
+        <button onclick="subscribeNewsletter()" class="bg-red-500 text-white py-2 px-4 rounded ml-2">Subscribe</button>
     </section>
 
-    <section id="categories">
-        <h2>Shop by Category</h2>
-        <div class="category-grid">
-            <div class="category-card"><a href="/shop.html?filter=beanies">Beanies</a></div>
-            <div class="category-card"><a href="/shop.html?filter=shirts">Shirts</a></div>
-            <div class="category-card"><a href="/shop.html?filter=pants">Pants</a></div>
-            <div class="category-card"><a href="/shop.html?filter=shorts">Shorts</a></div>
-            <div class="category-card"><a href="/shop.html?filter=hats">Hats</a></div>
-            <div class="category-card"><a href="/shop.html?filter=socks">Socks</a></div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>Email: <a href="mailto:support@shopvinko.com">support@shopvinko.com</a></p>
-        <p>Phone: (555) 123-4567</p>
-        <p>Follow us on social media for updates and promotions!</p>
-    </section>
-
-    <footer>
-        <div class="newsletter">
-            <h3>Stay in the Loop</h3>
-            <input type="email" id="newsletterEmail" placeholder="Enter your email" aria-label="Enter your email for newsletter">
-            <button onclick="subscribeNewsletter()">Subscribe</button>
-        </div>
-        <div class="social">
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-        </div>
-        <div class="legal">
-            <a href="/privacy.html" aria-label="Privacy Policy">Privacy Policy</a>
-            <a href="/terms.html" aria-label="Terms of Service">Terms of Service</a>
-        </div>
-        <div class="support">
-            <a href="/#contact">Customer Support</a>
-            <a href="/#contact">Shipping & Returns</a>
-            <a href="/#contact">FAQs</a>
-        </div>
+    <!-- Footer -->
+    <footer id="contact" class="p-6 text-center">
         <p>© 2025 Vinko. All rights reserved.</p>
+        <p><a href="mailto:support@shopvinko.com" class="text-red-500">support@shopvinko.com</a></p>
+        <div class="mt-4">
+            <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-facebook"></i></a>
+        </div>
     </footer>
 
-    <!-- Tawk.to Live Chat -->
-    <script>
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-            s1.async=true;
-            s1.src='https://embed.tawk.to/6812b2cda321df190d7b0ae2/default';
-            s1.charset='UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
+    <!-- Scripts -->
+    <!-- Tawk.to Chat Widget -->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6812b2cda321df190d7b0ae2/1iq4gkt8l';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
         })();
     </script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD_UEunKVvWiM6-0eOnqn1ijowEyXyf8Rk",
-    authDomain: "vinko-4e631.firebaseapp.com",
-    projectId: "vinko-4e631",
-    storageBucket: "vinko-4e631.firebasestorage.app",
-    messagingSenderId: "1076739457861",
-    appId: "1:1076739457861:web:0536bf0a3baff33ffc742c",
-        };
-        firebase.initializeApp(firebaseConfig);
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
 
-        // User authentication state
-        const userAccount = document.getElementById('userAccount');
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                userAccount.textContent = `Hi, ${user.email} (Sign Out)`;
-                userAccount.onclick = () => firebase.auth().signOut();
-            } else {
-                userAccount.textContent = 'Sign In';
-                userAccount.onclick = () => {
-                    const email = prompt('Enter your email:');
-                    const password = prompt('Enter your password:');
-                    firebase.auth().signInWithEmailAndPassword(email, password).catch(err => {
-                        if (err.code === 'auth/user-not-found') {
-                            firebase.auth().createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
-                        } else {
-                            alert(err.message);
-                        }
-                    });
-                };
-            }
-        });
+        function showWishlist() {
+            alert("Redirecting to your wishlist...");
+            window.location.href = "/shop.html#wishlist";
+        }
 
-        // Search functionality
         function searchProducts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.trim();
             if (query) {
                 window.location.href = `/shop.html?search=${encodeURIComponent(query)}`;
-            }
-        }
-
-        // Wishlist functionality (simplified)
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        function showWishlist() {
-            alert('Wishlist: ' + (wishlist.length ? wishlist.join(', ') : 'Empty'));
-        }
-
-        // Newsletter signup (placeholder)
-        function subscribeNewsletter() {
-            const email = document.getElementById('newsletterEmail').value;
-            if (email) {
-                alert('Thank you for subscribing!');
-                document.getElementById('newsletterEmail').value = '';
             } else {
-                alert('Please enter a valid email address.');
+                alert("Please enter a search term.");
             }
         }
 
-       <!-- Cookie Consent -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" integrity="sha512-h20K5uXSb2iI+0x0MhW0tKy0w1r5zJPC5cYp+S0q+jz2QDA4XzWnyZ4L7T80oI2ATj/ufpUmsUOyFlwT6Jtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    window.addEventListener("load", function(){
-        if (window.cookieconsent) {
-            window.cookieconsent.initialize({
-                "palette": {
-                    "popup": { "background": "#1a1a1a" },
-                    "button": { "background": "#00c4b4" }
-                },
-                "content": {
-                    "message": "We use cookies to enhance your experience.",
-                    "dismiss": "Got it!",
-                    "link": "Learn more",
-                    "href": "/privacy.html"
-                }
-            });
-        } else {
-            console.warn("CookieConsent library failed to load. Please check the CDN or your network.");
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletterEmail').value.trim();
+            if (!email) {
+                alert("Please enter your email address.");
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            alert("Thank you for subscribing! You’ll receive updates soon.");
+            console.log("Subscribed email:", email);
+            document.getElementById('newsletterEmail').value = "";
         }
-    });
-</script>
+
+        // Initialize cart count on page load
+        updateCartCount();
+    </script>
 </body>
 </html>

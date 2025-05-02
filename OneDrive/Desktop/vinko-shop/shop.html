@@ -1,0 +1,253 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Vinko</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #1a1a1a; color: #ffffff; }
+        header { background-color: #252525; }
+        nav a { transition: color 0.3s; }
+        nav a:hover { color: #ff4d4d; }
+        .product-card { transition: transform 0.3s; }
+        .product-card:hover { transform: scale(1.05); }
+        .cart-container { position: relative; display: inline-block; }
+        .cart-icon { font-size: 24px; color: #ff4d4d; cursor: pointer; }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="p-4">
+        <nav class="flex justify-between items-center">
+            <a href="/index.html"><img src="/assets/vinko-logo.png" alt="Vinko Logo" class="h-12"></a>
+            <ul class="flex space-x-6">
+                <li><a href="/index.html" class="text-white">Home</a></li>
+                <li><a href="/shop.html" class="text-white">Shop</a></li>
+                <li><a href="#" onclick="showWishlist()" class="text-white">Wishlist</a></li>
+                <li><a href="/privacy.html" class="text-white">Privacy</a></li>
+                <li><a href="/terms.html" class="text-white">Terms</a></li>
+            </ul>
+            <div class="flex space-x-4">
+                <div class="cart-container">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Shop Section -->
+    <section class="py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">Our Collection</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mx-4">
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/street-beanie.png" alt="Street Beanie" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Street Beanie</h3>
+                <p>$25.00</p>
+                <button onclick="addToCart('beanie', 25)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('beanie', 25)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/graphic-tee.png" alt="Graphic Tee" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Graphic Tee</h3>
+                <p>$35.00</p>
+                <button onclick="addToCart('tee', 35)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('tee', 35)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/cargo-pants.png" alt="Cargo Pants" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Cargo Pants</h3>
+                <p>$60.00</p>
+                <button onclick="addToCart('pants', 60)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('pants', 60)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/denim-shorts.png" alt="Denim Shorts" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Denim Shorts</h3>
+                <p>$45.00</p>
+                <button onclick="addToCart('shorts', 45)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('shorts', 45)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/bucket-hat.png" alt="Bucket Hat" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Bucket Hat</h3>
+                <p>$30.00</p>
+                <button onclick="addToCart('hat', 30)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('hat', 30)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+            <div class="product-card bg-gray-800 p-4 rounded">
+                <img src="/assets/patterned-socks.png" alt="Patterned Socks" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Patterned Socks</h3>
+                <p>$15.00</p>
+                <button onclick="addToCart('socks', 15)" class="bg-red-500 text-white py-2 px-4 rounded mt-2">Add to Cart</button>
+                <button onclick="addToCart('socks', 15)" class="text-red-500 mt-2"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <button id="checkout-btn" class="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-600">Checkout</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="p-6 text-center bg-gray-800">
+        <p>© 2025 Vinko. All rights reserved.</p>
+        <p><a href="mailto:support@shopvinko.com" class="text-red-500">support@shopvinko.com</a></p>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Tawk.to Chat Widget -->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6812b2cda321df190d7b0ae2/1iq4gkt8l';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <script>
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        async function addToCart(product, price) {
+            try {
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const baseUrl = isLocalhost ? 'http://localhost:3000' : '/api';
+                const checkStockUrl = `${baseUrl}/check-stock`;
+
+                const response = await fetch(checkStockUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product, quantity: 1 }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const existingItem = cart.find(item => item.product === product);
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        cart.push({ product, price, quantity: 1 });
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    alert(`${product} added to cart!`);
+                } else {
+                    alert(data.error || 'Failed to add to cart.');
+                }
+            } catch (error) {
+                console.error('Error checking stock:', error.message);
+                alert('Failed to add to cart. Please try again.');
+            }
+        }
+
+        function showWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            if (wishlist.length === 0) {
+                alert("Your wishlist is empty!");
+            } else {
+                alert("Your Wishlist:\n" + wishlist.join("\n"));
+            }
+        }
+
+        document.getElementById('checkout-btn').addEventListener('click', async () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            try {
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const baseUrl = isLocalhost ? 'http://localhost:3000' : '/api';
+                const checkoutUrl = `${baseUrl}/create-checkout-session`;
+
+                const response = await fetch(checkoutUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: cart }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const session = await response.json();
+                const stripe = Stripe('pk_test_51RJjXm4RX6e7Tyh3YzmlFcbw3qrZTEiJ3DW4VlLYzoSj8wh7RwfyYVRcDW57qa1csJc3VxseN3jp3GMcJJrKvD2V00XZ1ca64s');
+                await stripe.redirectToCheckout({ sessionId: session.id });
+            } catch (error) {
+                console.error('Checkout Error:', error.message);
+                alert('Checkout failed. Please try again.');
+            }
+        });
+
+        // Initialize cart count on page load
+        updateCartCount();
+    </script>
+</body>
+</html>

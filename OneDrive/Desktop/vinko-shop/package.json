@@ -1,0 +1,17 @@
+{
+    "name": "vinko-shop-v2",
+    "version": "1.0.0",
+    "description": "Vinko Streetwear E-commerce Backend",
+    "main": "api/server.js",
+    "scripts": {
+        "start": "node api/server.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "cors": "^2.8.5",
+        "body-parser": "^1.19.0",
+        "stripe": "^8.174.0",
+        "@sendgrid/mail": "^7.6.0",
+        "dotenv": "^10.0.0"
+    }
+}

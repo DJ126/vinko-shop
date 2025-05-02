@@ -1,0 +1,208 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vinko - Premium Streetwear E-commerce">
+    <meta name="keywords" content="streetwear, fashion, clothing, Vinko">
+    <meta name="author" content="Vinko">
+    <meta name="robots" content="index, follow">
+    <title>Vinko | Premium Streetwear</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #1a1a1a; color: #ffffff; }
+        header { background-color: #252525; }
+        nav a { transition: color 0.3s; }
+        nav a:hover { color: #ff4d4d; }
+        .category-card { transition: transform 0.3s; }
+        .category-card:hover { transform: scale(1.05); }
+        footer { background-color: #252525; }
+        .cart-container { position: relative; display: inline-block; }
+        .cart-icon { font-size: 24px; color: #ff4d4d; cursor: pointer; }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1234567890"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-1234567890');
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="p-4">
+        <nav class="flex justify-between items-center">
+            <a href="/index.html"><img src="/assets/vinko-logo.png" alt="Vinko Logo" class="h-12"></a>
+            <ul class="flex space-x-6">
+                <li><a href="/index.html" class="text-white">Home</a></li>
+                <li><a href="/shop.html" class="text-white">Shop</a></li>
+                <li><a href="#" onclick="showWishlist()" class="text-white">Wishlist</a></li>
+                <li><a href="/privacy.html" class="text-white">Privacy</a></li>
+                <li><a href="/terms.html" class="text-white">Terms</a></li>
+            </ul>
+            <div class="flex space-x-4">
+                <input type="text" id="searchInput" placeholder="Search..." class="p-2 rounded text-black">
+                <button onclick="searchProducts()" class="bg-red-500 p-2 rounded text-white">Search</button>
+                <div class="cart-container">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="text-center py-20">
+        <h1 class="text-5xl font-bold mb-4">Welcome to Vinko</h1>
+        <p class="text-xl mb-6">Premium Streetwear for the Modern Rebel</p>
+        <a href="/shop.html" class="bg-red-500 text-white py-3 px-6 rounded hover:bg-red-600">Shop Now</a>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">Explore Categories</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mx-4">
+            <div class="category-card bg-gray-800 p-4 rounded">
+                <img src="/assets/graphic-tee.png" alt="Graphic Tee" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Graphic Tees</h3>
+                <a href="/shop.html#tees" class="text-red-500 mt-2 inline-block">Shop Now</a>
+            </div>
+            <div class="category-card bg-gray-800 p-4 rounded">
+                <img src="/assets/cargo-pants.png" alt="Cargo Pants" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Cargo Pants</h3>
+                <a href="/shop.html#pants" class="text-red-500 mt-2 inline-block">Shop Now</a>
+            </div>
+            <div class="category-card bg-gray-800 p-4 rounded">
+                <img src="/assets/bucket-hat.png" alt="Bucket Hat" class="w-full h-48 object-cover rounded">
+                <h3 class="text-xl mt-4">Bucket Hats</h3>
+                <a href="/shop.html#hats" class="text-red-500 mt-2 inline-block">Shop Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-12 bg-gray-700 text-center">
+        <h2 class="text-3xl font-bold mb-4">Join Our Newsletter</h2>
+        <p class="mb-6">Stay updated with the latest drops and exclusive offers!</p>
+        <input type="email" id="newsletterEmail" placeholder="Enter your email" class="p-2 rounded text-black">
+        <button onclick="subscribeNewsletter()" class="bg-red-500 text-white py-2 px-4 rounded ml-2">Subscribe</button>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="p-6 text-center">
+        <p>© 2025 Vinko. All rights reserved.</p>
+        <p><a href="mailto:support@shopvinko.com" class="text-red-500">support@shopvinko.com</a></p>
+        <div class="mt-4">
+            <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-facebook"></i></a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Tawk.to Chat Widget -->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6812b2cda321df190d7b0ae2/1iq4gkt8l';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <script>
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        function showWishlist() {
+            alert("Redirecting to your wishlist...");
+            window.location.href = "/shop.html#wishlist";
+        }
+
+        function searchProducts() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `/shop.html?search=${encodeURIComponent(query)}`;
+            } else {
+                alert("Please enter a search term.");
+            }
+        }
+
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletterEmail').value.trim();
+            if (!email) {
+                alert("Please enter your email address.");
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            alert("Thank you for subscribing! You’ll receive updates soon.");
+            console.log("Subscribed email:", email);
+            document.getElementById('newsletterEmail').value = "";
+        }
+
+        // Initialize cart count on page load
+        updateCartCount();
+    </script>
+</body>
+</html>
